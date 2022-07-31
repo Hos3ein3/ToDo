@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ToDoContext from './ToDo.context';
 import ToDoListItem from './ToDoListItem.component';
+import PropTypes from 'prop-types';
 
-export default class ToDoList extends Component {
+class ToDoList extends Component {
     static contextType = ToDoContext;
     render() {
         return (
@@ -27,3 +28,8 @@ export default class ToDoList extends Component {
         );
     }
 }
+
+ToDoList.propTypes={
+
+};
+export default ToDoList;

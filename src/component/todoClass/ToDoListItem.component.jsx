@@ -1,15 +1,22 @@
 
 import { Component, useContext } from "react";
 import ToDoContext from "./ToDo.context";
+import PropTypes from 'prop-types';
 
-export default class ToDoListItem extends Component {
+class ToDoListItem extends Component {
 
     constructor(params) {
         super();
-        
 
     }
-    
+
+    componentWillUnmount() {
+        //bade hazf o delete shodan component ejra mishe 
+
+    }
+
+
+
 
     static contextType = ToDoContext;
     render() {
@@ -31,3 +38,9 @@ export default class ToDoListItem extends Component {
         );
     }
 }
+ToDoListItem.propTypes = {
+    id: PropTypes.number,
+    isChecked: PropTypes.bool,
+    title: PropTypes.string,
+}
+export default ToDoListItem;

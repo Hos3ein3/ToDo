@@ -1,117 +1,34 @@
 //import logo from './logo.svg';
 //import './App.css';
-import React, { Component } from 'react';
-import { toast } from 'react-toastify';
+import React, { Component, Fragment, createRef } from 'react';
 import ToDoContext from './component/todoClass/ToDo.context';
-import ToDoCreate from './component/todoClass/ToDoCreate.component';
-import ToDoList from './component/todoClass/ToDoList.component';
-import ToDoListCount from './component/todoClass/ToDoListCount.component';
+import ToDoHOC2 from './HOC/ToDo2.HOC';
+import ToDo from './component/todoClass/ToDo.Component';
+import AboutUsClass from './component/aboutUs/AboutUs.Class.component';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from './component/navbar';
 
+{/* Fragment used when we dont have root element */ }
+{/* We can use our custom fragment instead of built in fragment */ }
 
 class AppClass extends Component {
 
-    state = {
-        Jobs: [
-            // {id:1,title:'Create theme',isChecked:true},
-            // {id:2,title:'Work on wordpress',isChecked:false},
-            // {id:3,title:'Organize office main department',isChecked:false},
-            // {id:4,title:'Error solve in HTML template',isChecked:false},
-        ],
-        Job: '',
-        Status: 0
-    };
-
-    //static contextType = ToDoContext;
-
-    AddJob = () => {
-        let newJobTextInState = this.state.Job;
-        if (newJobTextInState) {
-            const myJobs = this.state.Jobs;
-            const newJob = {
-                id: Math.floor(Math.random() * 1000),
-                title: this.state.Job,
-                isChecked: false
-            };
-            myJobs.push(newJob);
-            this.setState({ Jobs: myJobs, Job: '' });
-            toast.success('.با موفیقت اضافه شد', {
-                position: 'top-right',
-                closeButton: true,
-                closeOnClick: true,
-                autoClose: 4000
-            });
-            document.getElementById('AddNewJob').focus();
-            return;
-        }
-        toast.error('فیلد را پر کنید', {
-            position: 'top-right',
-            closeButton: true,
-            closeOnClick: true,
-            autoClose: 4000
-        });
-    };
-
-    SetNewJob = (event) => {
-        this.setState({ Job: event.target.value });
-    }
-
-    DeleteJob = (id) => {
-        const copyJobs = [...this.state.Jobs];
-        const filter = copyJobs.filter(x => x.id !== id);
-        this.setState({ Jobs: filter });
-    };
-
-
-    CompleteJob = (id) => {
-        const copyList = [...this.state.Jobs];
-        const findIndex = copyList.findIndex(x => x.id === id);
-        if (copyList[findIndex] != null) {
-            const copyJob = copyList[findIndex];
-            copyJob.isChecked = !copyJob.isChecked;
-            const newCopyList = [...copyList];
-            newCopyList[findIndex] = copyJob;
-            this.setState({ Jobs: newCopyList });
-        }
-
-    };
-
-    ShowJobs = (status) => {
-        const copyJobs = [...this.state.Jobs];
-        const showJobs = status === 0 ? copyJobs :
-            status === 1 ? copyJobs.filter(x => x.isChecked === false) :
-                copyJobs.filter(x => x.isChecked === true);
-        this.setState({ Jobs: showJobs, Status: 0 });
-    };
-
+    static contextType = ToDoContext;
     render() {
         return (
-            <ToDoContext.Provider value={{
-                state: this.state,
-                DeleteJob: this.DeleteJob,
-                CompleteJob: this.CompleteJob,
-                SetNewJob: this.SetNewJob,
-                AddJob: this.AddJob
-            }}>
-                <h3 className='text-center'>Class Component</h3>
-                <div className="container rtl text-center">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="card card-white" >
-                                <div className="card-body">
-                                    <ToDoCreate />
-                                    <div className="todo-list">
-                                        <ToDoList />
-                                    </div>
-                                </div>
-                                <ToDoListCount />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <Fragment>
+                <Navbar />
 
-            </ToDoContext.Provider>
-        )
+                <Routes>
+                    <Route path="/" exact element={<ToDo />} />
+                    <Route path="/about" element={<AboutUsClass developerName='بهزادی' />} />
+                </Routes>
+
+
+            </Fragment>
+
+        );
     }
 }
 
-export default AppClass;
+export default ToDoHOC2(AppClass, "");
